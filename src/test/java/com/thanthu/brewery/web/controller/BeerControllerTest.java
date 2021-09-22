@@ -1,8 +1,11 @@
 package com.thanthu.brewery.web.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -22,6 +26,11 @@ import com.thanthu.brewery.web.model.BeerDto;
 
 @ExtendWith(MockitoExtension.class)
 class BeerControllerTest {
+	
+	private static final UUID beerId = UUID.randomUUID();
+	private static final String beerName = "beerName";
+	private static final String beerStyle = "beerStyle";
+	private BeerDto beerDto;
 	
 	@Mock
 	private BeerService beerService;
@@ -33,19 +42,37 @@ class BeerControllerTest {
 	
 	@BeforeEach
 	void setup() {
+		beerDto = BeerDto.builder()
+				.id(beerId)
+				.beerName(beerName)
+				.beerStyle(beerStyle)
+				.build();
+		
 		mockMvc = MockMvcBuilders.standaloneSetup(beerController).build();
 	}
 
 	@Test
 	void testGetBeer() throws Exception {
-		UUID beerId = UUID.randomUUID();
-		BeerDto beerDto = BeerDto.builder().id(beerId).build();
 		
 		when(beerService.getBeerById(beerId)).thenReturn(beerDto);
 		
 		mockMvc.perform(get(BeerController.API_BASE_URL + "/" + beerId.toString()))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.id").value(beerId.toString()));
+	}
+	
+	@Test
+	void handlePost() throws Exception {
+		
+		when(beerService.saveNewBeer(any(BeerDto.class))).thenReturn(beerDto);
+		
+		mockMvc.perform(post(BeerController.API_BASE_URL)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(AbstractRestControllerTest.asJsonString(beerDto)))
+		.andExpect(status().isCreated())
+		.andExpect(header().string("Location", containsString(BeerController.API_BASE_URL + "/")));
+		
 	}
 
 }

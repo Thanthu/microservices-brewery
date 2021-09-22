@@ -11,7 +11,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerDto getCustomerById(UUID customerId) {
-		return CustomerDto.builder().id(customerId).name("Joe Buck").build();
+		return CustomerDto.builder()
+				.id(customerId)
+				.name("Joe Buck")
+				.build();
 	}
 
 }
