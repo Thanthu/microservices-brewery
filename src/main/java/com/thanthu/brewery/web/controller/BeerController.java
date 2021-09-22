@@ -15,19 +15,18 @@ import com.thanthu.brewery.web.model.BeerDto;
 @RequestMapping(BeerController.API_BASE_URL)
 @RestController
 public class BeerController {
-	
+
 	public static final String API_BASE_URL = "/api/v1/beer";
-	
+
 	private final BeerService beerService;
 
-    public BeerController(BeerService beerService) {
-        this.beerService = beerService;
-    }
+	public BeerController(BeerService beerService) {
+		this.beerService = beerService;
+	}
 
-    @GetMapping({"/{beerId}"})
-    public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId") UUID beerId){
-
-        return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
-    }
+	@GetMapping({ "/{beerId}" })
+	public ResponseEntity<BeerDto> getBeer(@PathVariable UUID beerId) {
+		return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
+	}
 
 }
