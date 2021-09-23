@@ -3,6 +3,7 @@ package com.thanthu.brewery.web.controller;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -63,7 +64,7 @@ class BeerControllerTest {
 	}
 	
 	@Test
-	void handlePost() throws Exception {
+	void testHandlePost() throws Exception {
 		
 		when(beerService.saveNewBeer(any(BeerDto.class))).thenReturn(beerDto);
 		
@@ -77,9 +78,20 @@ class BeerControllerTest {
 	}
 	
 	@Test
-	void handleUpdate() throws Exception {
+	void testHandleUpdate() throws Exception {
 		
 		mockMvc.perform(put(BeerController.API_BASE_URL + "/" + beerId)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(AbstractRestControllerTest.asJsonString(beerDto)))
+		.andExpect(status().isNoContent());
+		
+	}
+	
+	@Test
+	void testDeleteBeer() throws Exception {
+		
+		mockMvc.perform(delete(BeerController.API_BASE_URL + "/" + beerId)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(AbstractRestControllerTest.asJsonString(beerDto)))
