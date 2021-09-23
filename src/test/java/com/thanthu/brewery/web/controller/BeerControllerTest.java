@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,6 +73,17 @@ class BeerControllerTest {
 				.content(AbstractRestControllerTest.asJsonString(beerDto)))
 		.andExpect(status().isCreated())
 		.andExpect(header().string("Location", containsString(BeerController.API_BASE_URL + "/")));
+		
+	}
+	
+	@Test
+	void handleUpdate() throws Exception {
+		
+		mockMvc.perform(put(BeerController.API_BASE_URL + "/" + beerId)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(AbstractRestControllerTest.asJsonString(beerDto)))
+		.andExpect(status().isNoContent());
 		
 	}
 

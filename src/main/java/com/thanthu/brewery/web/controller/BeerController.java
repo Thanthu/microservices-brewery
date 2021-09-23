@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,10 +39,18 @@ public class BeerController {
 		BeerDto savedDto = beerService.saveNewBeer(beerDto);
 
 		HttpHeaders headers = new HttpHeaders();
-		// todo add hostname to url
+		// TODO add hostname to url
 		headers.add("Location", API_BASE_URL + "/" + savedDto.getId().toString());
 
 		return new ResponseEntity<>(headers, HttpStatus.CREATED);
 	}
+	
+	@PutMapping({"/{beerId}"})
+    public ResponseEntity handleUpdate(@PathVariable("beerId") UUID beerId, BeerDto beerDto){
+
+        beerService.updateBeer(beerId, beerDto);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 }
