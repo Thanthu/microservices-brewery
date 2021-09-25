@@ -33,6 +33,7 @@ class BeerControllerTest {
 	private static final String beerName = "beerName";
 	private static final String beerStyle = "beerStyle";
 	private BeerDto beerDto;
+	private BeerDto copyOfBeerDtoWithoutId;
 	
 	@Mock
 	private BeerService beerService;
@@ -50,6 +51,11 @@ class BeerControllerTest {
 				.beerStyle(beerStyle)
 				.build();
 		
+		copyOfBeerDtoWithoutId = BeerDto.builder()
+				.beerName(beerName)
+				.beerStyle(beerStyle)
+				.build();
+		
 		mockMvc = MockMvcBuilders.standaloneSetup(beerController).build();
 	}
 
@@ -58,7 +64,7 @@ class BeerControllerTest {
 		
 		when(beerService.getBeerById(beerId)).thenReturn(beerDto);
 		
-		mockMvc.perform(get(BeerController.API_BASE_URL + "/" + beerId.toString()))
+		mockMvc.perform(get(BeerController.API_BASE_URL + "/" + beerId))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.id").value(beerId.toString()));
 	}
@@ -71,7 +77,7 @@ class BeerControllerTest {
 		mockMvc.perform(post(BeerController.API_BASE_URL)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(AbstractRestControllerTest.asJsonString(beerDto)))
+				.content(AbstractRestControllerTest.asJsonString(copyOfBeerDtoWithoutId)))
 		.andExpect(status().isCreated())
 		.andExpect(header().string("Location", containsString(BeerController.API_BASE_URL + "/")));
 		
@@ -79,11 +85,12 @@ class BeerControllerTest {
 	
 	@Test
 	void testHandleUpdate() throws Exception {
+		beerDto.setId(null);
 		
 		mockMvc.perform(put(BeerController.API_BASE_URL + "/" + beerId)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(AbstractRestControllerTest.asJsonString(beerDto)))
+				.content(AbstractRestControllerTest.asJsonString(copyOfBeerDtoWithoutId)))
 		.andExpect(status().isNoContent());
 		
 	}
