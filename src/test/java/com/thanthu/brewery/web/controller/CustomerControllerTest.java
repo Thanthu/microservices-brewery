@@ -76,6 +76,19 @@ class CustomerControllerTest {
 	}
 	
 	@Test
+	void testHandlePostInvalidName() throws Exception {
+		
+		customerDto.setName("a");
+		
+		mockMvc.perform(post(CustomerController.API_BASE_URL)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(AbstractRestControllerTest.asJsonString(customerDto)))
+		.andExpect(status().isBadRequest());
+		
+	}
+	
+	@Test
 	void testHandleUpdate() throws Exception {
 		
 		mockMvc.perform(put(CustomerController.API_BASE_URL + "/" + customerId)
@@ -83,6 +96,19 @@ class CustomerControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(AbstractRestControllerTest.asJsonString(customerDto)))
 		.andExpect(status().isNoContent());
+		
+	}
+	
+	@Test
+	void testHandleUpdateInvalidName() throws Exception {
+		
+		customerDto.setName("a");
+		
+		mockMvc.perform(put(CustomerController.API_BASE_URL + "/" + customerId)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(AbstractRestControllerTest.asJsonString(customerDto)))
+		.andExpect(status().isBadRequest());
 		
 	}
 	
