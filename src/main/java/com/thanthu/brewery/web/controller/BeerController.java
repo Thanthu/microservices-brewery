@@ -67,7 +67,7 @@ public class BeerController {
 		beerService.deleteById(beerId);
 	}
 
-	@ExceptionHandler({MethodArgumentNotValidException.class })
+	/*@ExceptionHandler({MethodArgumentNotValidException.class })
 	public ResponseEntity<List<String>> validationErrorHandler(MethodArgumentNotValidException e) {
 		List<String> errors = new ArrayList<>(e.getFieldErrorCount());
 
@@ -76,6 +76,6 @@ public class BeerController {
 		});
 
 		return new ResponseEntity<List<String>>(errors, HttpStatus.BAD_REQUEST);
-	}
+	}*/
 
 }

@@ -62,7 +62,7 @@ public class CustomerController {
 		customerService.deleteById(customerId);
 	}
 	
-	@ExceptionHandler({MethodArgumentNotValidException.class })
+	/*@ExceptionHandler({MethodArgumentNotValidException.class })
 	public ResponseEntity<List<String>> validationErrorHandler(MethodArgumentNotValidException e) {
 		List<String> errors = new ArrayList<>(e.getFieldErrorCount());
 
@@ -71,6 +71,6 @@ public class CustomerController {
 		});
 
 		return new ResponseEntity<List<String>>(errors, HttpStatus.BAD_REQUEST);
-	}
+	}*/
 
 }
