@@ -1,5 +1,6 @@
 package com.thanthu.brewery.web.model;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
@@ -16,17 +17,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class BeerDto {
-	
+
 	@Null
-    private UUID id;
+	private UUID id;
 
-    @NotBlank
-    private String beerName;
+	@NotBlank
+	private String beerName;
 
-    @NotBlank
-    private String beerStyle;
+	@NotBlank
+	private String beerStyle;
 
-    @Positive
-    private Long upc;
-	
+	@Positive
+	private Long upc;
+
+	private OffsetDateTime createdDate;
+	private OffsetDateTime lastUpdatedDate;
+
 }

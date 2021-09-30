@@ -5,10 +5,10 @@ import org.mapstruct.Mapper;
 import com.thanthu.brewery.domain.Beer;
 import com.thanthu.brewery.web.model.BeerDto;
 
-@Mapper
+@Mapper(uses = { DateMapper.class })
 public interface BeerMapper {
 
-    BeerDto beerToBeerDto(Beer beer);
+	BeerDto beerToBeerDto(Beer beer);
 
-    Beer beerDtoToBeer(BeerDto dto);
+	Beer beerDtoToBeer(BeerDto dto);
 }

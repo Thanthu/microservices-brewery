@@ -1,5 +1,6 @@
 package com.thanthu.brewery.domain;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import com.thanthu.brewery.web.model.BeerStyleEnum;
@@ -18,4 +19,7 @@ public class Beer {
     private String beerName;
     private BeerStyleEnum beerStyle;
     private Long upc;
+    
+    private Timestamp createdDate;
+    private Timestamp lastUpdatedDate;
 }
